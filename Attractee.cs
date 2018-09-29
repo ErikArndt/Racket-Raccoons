@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Attractee : MonoBehaviour {
 
-    public Rigidbody2D rb;
+    public Rigidbody rb;
 
-    public bool attracting = true;
+	public bool attracting = true;
 }

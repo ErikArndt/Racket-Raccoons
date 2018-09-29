@@ -9,7 +9,7 @@ public class Attractor : MonoBehaviour {
 
     const float G = 1;
 
-    public Rigidbody2D rb;
+    public Rigidbody rb;
 
     public float gravRadius = 5;
 
@@ -27,16 +27,16 @@ public class Attractor : MonoBehaviour {
 
     void Attract(Attractee objectToAttract)
     {
-        Rigidbody2D rbToAttract = objectToAttract.rb;
+        Rigidbody rbToAttract = objectToAttract.rb;
 
-        Vector2 direction = rb.position - rbToAttract.position;
+        Vector3 direction = rb.position - rbToAttract.position;
         float distance = direction.magnitude;
         
         if (distance <= gravRadius)
         {
             float forceMagnitude = G * (rb.mass * rbToAttract.mass) / Mathf.Pow(distance, 2);
 
-            Vector2 force = direction; // initialization
+            Vector3 force = direction; // initialization
             if (objectToAttract.attracting)
             {
                 force = direction.normalized * forceMagnitude;
