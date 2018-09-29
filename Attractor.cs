@@ -11,6 +11,8 @@ public class Attractor : MonoBehaviour {
 
     public Rigidbody2D rb;
 
+    public float gravRadius = 5;
+
     private void FixedUpdate()
     {
         Attractee[] attractees = FindObjectsOfType<Attractee>();
@@ -29,18 +31,23 @@ public class Attractor : MonoBehaviour {
 
         Vector2 direction = rb.position - rbToAttract.position;
         float distance = direction.magnitude;
-
-        float forceMagnitude = G * (rb.mass * rbToAttract.mass) / Mathf.Pow(distance, 2);
-
-        Vector2 force = direction; // initialization
-        if (objectToAttract.attracting) {
-            force = direction.normalized * forceMagnitude;
-        } else
-        {
-            force = direction.normalized * forceMagnitude * -1;
-        }
         
+        if (distance <= gravRadius)
+        {
+            float forceMagnitude = G * (rb.mass * rbToAttract.mass) / Mathf.Pow(distance, 2);
 
-        rbToAttract.AddForce(force);
+            Vector2 force = direction; // initialization
+            if (objectToAttract.attracting)
+            {
+                force = direction.normalized * forceMagnitude;
+            }
+            else
+            {
+                force = direction.normalized * forceMagnitude * -1;
+            }
+
+
+            rbToAttract.AddForce(force);
+        }
     }
 }
