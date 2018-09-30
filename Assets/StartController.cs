@@ -8,6 +8,6 @@ public class StartController : MonoBehaviour, IPointerDownHandler {
 
 	public void OnPointerDown (PointerEventData eventData) {
 		Debug.Log ("Clicked");
-		SceneManager.LoadScene ("SampleScene");
+		SceneManager.LoadScene ("game");
 	}
 }

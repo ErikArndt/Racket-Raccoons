@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
     public RectTransform bar;
-    public float power, charge;
+    public float power, charge, decay;
     private Rigidbody thisRb;
     private float chargeStart;
     enum ChargeState { Stable, Charging, Launched };
@@ -30,6 +31,18 @@ public class PlayerController : MonoBehaviour
             thisRb.isKinematic = true;
         }
     }
+
+    IEnumerator DeathAnim()
+    {
+        while (transform.localScale.x > 0.05f)
+        {
+            transform.localScale *= decay;
+            yield return null;
+        }
+        this.gameObject.SetActive(false);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -37,7 +50,7 @@ public class PlayerController : MonoBehaviour
             transform.rotation = Quaternion.LookRotation(
                 Vector3.forward, Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position);
 
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetKeyDown(KeyCode.LeftControl))
             {
                 cs = ChargeState.Charging;
                 chargeStart = Time.time;
@@ -47,12 +60,18 @@ public class PlayerController : MonoBehaviour
             barScale.x += charge;
             bar.sizeDelta = barScale;
 
-            if (Input.GetMouseButtonUp(0))
+            if (Input.GetKeyUp(KeyCode.LeftControl))
             {
                 thisRb.AddForce(power*transform.up * (Time.time - chargeStart));
                 cs = ChargeState.Launched;
                 transform.GetChild(0).gameObject.SetActive(false);
             }
+        }
+
+
+        if (Input.GetKey(KeyCode.R))
+        {
+            StartCoroutine("DeathAnim");
         }
 
     }

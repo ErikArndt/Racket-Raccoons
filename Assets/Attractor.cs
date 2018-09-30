@@ -13,6 +13,18 @@ public class Attractor : MonoBehaviour {
 
     public float gravRadius = 5;
 
+    public GameObject Ring;
+    public Sprite sprRed, sprBlue;
+    private SpriteRenderer Ringspr;
+
+    private void Start()
+    {
+        GameObject ring = Instantiate(Ring);
+        ring.transform.position = transform.position;
+        ring.transform.localScale *= gravRadius * 2;
+        Ringspr = ring.GetComponent<SpriteRenderer>();
+    }
+
     private void FixedUpdate()
     {
         Attractee[] attractees = FindObjectsOfType<Attractee>();
@@ -22,6 +34,16 @@ public class Attractor : MonoBehaviour {
             {
                 Attract(attractee);
             }
+        }
+
+
+        if (ButtonScript.cbstate == ButtonScript.ButtonState.Repel)
+        {
+            Ringspr.sprite = sprRed;
+        }
+        else
+        {
+            Ringspr.sprite = sprBlue;
         }
     }
 
